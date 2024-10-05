@@ -4,8 +4,12 @@
 
 #include <stdint.h>
 
+/* LM75BD I2C Address Configuration Pin Values */
+#define LM75BD_A0_ACTIVE 1U
+#define LM75BD_A1_ACTIVE 1U
+#define LM75BD_A2_ACTIVE 1U
 /* LM75BD I2C Device Address */
-#define LM75BD_OBC_I2C_ADDR /* Define the address here */
+#define LM75BD_OBC_I2C_ADDR (((0b1001U << 1 | LM75BD_A0_ACTIVE) << 1 | LM75BD_A1_ACTIVE) << 1 | LM75BD_A2_ACTIVE)
 
 /* LM75BD Configuration Values */
 #define LM75BD_DEV_OP_MODE_NORMAL 0x00U
@@ -57,6 +61,7 @@ error_code_t lm75bdInit(lm75bd_config_t *config);
 /**
  * @brief Read the temperature from the LM75BD
  *
+ * @param devAddr the I2C address of the LM75BD
  * @param temp Pointer to float to store the temperature in degrees Celsius
  * @return ERR_CODE_SUCCESS if successful, error code otherwise
  */

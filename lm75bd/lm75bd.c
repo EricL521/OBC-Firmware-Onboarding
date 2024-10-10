@@ -31,7 +31,7 @@ error_code_t readTempLM75BD(uint8_t devAddr, float *temp) {
   error_code_t errCode;
 
   // send what data we want to read from sensor
-  uint8_t temperaturePointer = 0b00000000U;
+  uint8_t temperaturePointer = 0;
   // i2cSendTo handles read/write bit somehow
   RETURN_IF_ERROR_CODE(i2cSendTo(devAddr, &temperaturePointer, 1));
 
@@ -42,7 +42,7 @@ error_code_t readTempLM75BD(uint8_t devAddr, float *temp) {
   // convert byte to temperature
   uint16_t temperatureBits = ((uint16_t) sensorResponse[0] << 8 | sensorResponse[1]) >> 5;
   uint8_t signBit = temperatureBits >> (11 - 1) & 1;
-  temperatureBits &= 0b1111111111U;
+  temperatureBits &= 0x3FFU; // only keep last 10 bits of data
   *temp = (-signBit * 1024 + temperatureBits) * 0.125f;
   
   return ERR_CODE_SUCCESS;

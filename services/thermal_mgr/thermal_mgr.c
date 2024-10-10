@@ -43,6 +43,8 @@ void initThermalSystemManager(lm75bd_config_t *config) {
 }
 
 error_code_t thermalMgrSendEvent(thermal_mgr_event_t *event) {
+  if (event == NULL) return ERR_CODE_INVALID_ARG;
+
   if (xQueueSend(thermalMgrQueueHandle, event, 0) != pdPASS) {
     return ERR_CODE_QUEUE_FULL;
   }
@@ -50,6 +52,8 @@ error_code_t thermalMgrSendEvent(thermal_mgr_event_t *event) {
   return ERR_CODE_SUCCESS;
 }
 error_code_t thermalMgrSendEventToFront(thermal_mgr_event_t *event) {
+  if (event == NULL) return ERR_CODE_INVALID_ARG;
+
   if (xQueueSendToFront(thermalMgrQueueHandle, event, 0) != pdPASS) {
     return ERR_CODE_QUEUE_FULL;
   }
@@ -69,7 +73,7 @@ static void thermalMgr(void *pvParameters) {
 
   while (1) {
     thermal_mgr_event_t event;
-    if (xQueueReceive(thermalMgrQueueHandle, &event, 0) == pdPASS) {
+    if (xQueueReceive(thermalMgrQueueHandle, &event, portMAX_DELAY) == pdPASS) {
       if (event.type == THERMAL_MGR_EVENT_MEASURE_TEMP_CMD) {
         float temp;
         error_code_t errCode = readTempLM75BD(config.devAddr, &temp);

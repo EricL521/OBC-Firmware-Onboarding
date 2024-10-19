@@ -4,12 +4,8 @@
 
 #include <stdint.h>
 
-/* LM75BD I2C Address Configuration Pin Values */
-#define LM75BD_A0_ACTIVE 1U
-#define LM75BD_A1_ACTIVE 1U
-#define LM75BD_A2_ACTIVE 1U
 /* LM75BD I2C Device Address */
-#define LM75BD_OBC_I2C_ADDR (((0x9U << 1 | LM75BD_A0_ACTIVE) << 1 | LM75BD_A1_ACTIVE) << 1 | LM75BD_A2_ACTIVE)
+#define LM75BD_OBC_I2C_ADDR 0x4FU
 
 /* LM75BD Configuration Values */
 #define LM75BD_DEV_OP_MODE_NORMAL 0x00U
